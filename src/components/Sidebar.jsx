@@ -9,8 +9,6 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [expandedItems, setExpandedItems] = useState({});
-
-    // Get user data from Redux store
     const user = useSelector(state => state.auth?.user || {});
     const userName = user?.firstName ? `${user.firstName} ${user.lastName || ''}` : 'Admin User';
     const userEmail = user?.email || 'admin@example.com';
@@ -49,7 +47,6 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         { name: 'Settings', path: '/settings', icon: 'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z' }
     ];
 
-    // Add Register link for admin users
     if (user?.role === 'admin') {
         navItems.splice(2, 0, {
             name: 'Register Staff',
@@ -60,7 +57,6 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
     return (
         <>
-            {/* Mobile menu button - visible on small screens */}
             <button
                 onClick={toggleSidebar}
                 className="fixed top-4 left-4 z-50 lg:hidden bg-blue-500 text-white p-2 rounded-md"
@@ -76,20 +72,15 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                     </svg>
                 )}
             </button>
-
-            {/* Overlay for mobile */}
             {isOpen && (
                 <div
                     className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
                     onClick={toggleSidebar}
                 ></div>
             )}
-
-            {/* Sidebar with both transform and width transitions */}
             <div className={`fixed top-0 left-0 h-full bg-white shadow-lg z-50 transition-all duration-300 ease-in-out 
                 ${isOpen ? 'translate-x-0 w-64' : '-translate-x-full lg:translate-x-0 lg:w-20'}`}>
                 <div className="flex flex-col h-full">
-                    {/* Move Toggle button inside sidebar, at the top */}
                     <div className="flex items-center justify-between h-16 border-b px-4">
                         <img src={logo} style={isOpen ? { display: "block" } : { display: "none" }} width={isOpen ? 120 : 0} alt="" />
                         <button
@@ -108,8 +99,6 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                             )}
                         </button>
                     </div>
-
-                    {/* User Profile Card - at the top after toggle */}
                     {isOpen && (
                         <div className="p-4 border-b bg-gray-50 transition-opacity duration-300">
                             <div className="flex items-center">
@@ -124,7 +113,6 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                         </div>
                     )}
 
-                    {/* Navigation links */}
                     <nav className="flex-1 pt-2 pb-4 overflow-y-auto">
                         <ul className="space-y-1 px-2">
                             {navItems.map((item) => (
@@ -203,7 +191,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                                             }}
                                         >
                                             <svg
-                                                className={`h-5 w-5 ${location.pathname.startsWith(item.path) ? 'text-blue-600' : 'text-gray-500'}`} // Larger size, centered by parent flex
+                                                className={`h-5 w-5 ${location.pathname.startsWith(item.path) ? 'text-blue-600' : 'text-gray-500'}`}
                                                 fill="none"
                                                 viewBox="0 0 24 24"
                                                 stroke="currentColor"
@@ -219,8 +207,6 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                             ))}
                         </ul>
                     </nav>
-
-                    {/* Footer with logout button - only show when sidebar is open */}
                     {isOpen && (
                         <div className="border-t p-4">
                             <button

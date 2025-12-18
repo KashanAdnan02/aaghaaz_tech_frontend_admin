@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify"
 import api from '../utils/axios';
-
-const AdminRegister = () => {
+import { useNavigate } from 'react-router-dom';
+export default function AdminRegister() {
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -27,9 +27,7 @@ const AdminRegister = () => {
   const [languageInput, setLanguageInput] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [touched, setTouched] = useState({});
   const [previewUrl, setPreviewUrl] = useState('');
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -48,18 +46,13 @@ const AdminRegister = () => {
         [name]: value
       }));
     }
-    // Mark field as touched
-    setTouched(prev => ({
-      ...prev,
-      [name]: true
-    }));
   };
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       if (file.size > 2 * 1024 * 1024) {
-        toast.error('Image size must be less than 2MB');
+        alert('Image size must be less than 2MB');
         e.target.value = '';
         return;
       }
@@ -69,14 +62,6 @@ const AdminRegister = () => {
       }));
       setPreviewUrl(URL.createObjectURL(file));
     }
-  };
-
-  const handleBlur = (e) => {
-    const { name } = e.target;
-    setTouched(prev => ({
-      ...prev,
-      [name]: true
-    }));
   };
 
   const handleAddExpertise = () => {
@@ -120,8 +105,8 @@ const AdminRegister = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
+
     setError('');
     setIsLoading(true);
     try {
@@ -154,173 +139,129 @@ const AdminRegister = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto">
-        <div className="text-center mb-8">
-          <h2 className="text-4xl font-extrabold text-gray-900 mb-2">
-            Register New Staff
-          </h2>
-          <p className="text-gray-600">Fill in the details to create a new staff account</p>
+    <div className="min-h-screen bg-white py-12 px-4">
+      <div className="max-w-2xl mx-auto">
+        <div className="text-center mb-10">
+          <h1 className="text-3xl font-bold text-black mb-2">Register New Staff</h1>
+          <p className="text-gray-500 text-sm">Fill in the details to create a new account</p>
         </div>
 
         {error && (
-          <div className="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded mb-6" role="alert">
+          <div className="bg-gray-100 border-l-4 border-black text-gray-800 p-4 rounded mb-6">
             <p className="font-medium">Error</p>
-            <p>{error}</p>
+            <p className="text-sm">{error}</p>
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-8 bg-white shadow-xl rounded-lg px-8 pt-8 pb-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">
+        <div className="space-y-6 bg-white border border-gray-200 rounded-lg p-8">
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-900 mb-2">
                 First Name
               </label>
               <input
                 type="text"
                 name="firstName"
                 required
-                className={`w-full px-4 py-2 rounded-lg border ${
-                  touched.firstName && !formData.firstName ? 'border-red-500' : 'border-gray-300'
-                } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200`}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-black transition-colors text-sm"
                 value={formData.firstName}
                 onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="Enter first name"
+                placeholder="First name"
               />
-              {touched.firstName && !formData.firstName && (
-                <p className="text-red-500 text-sm">First name is required</p>
-              )}
             </div>
-            <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">
+            <div>
+              <label className="block text-sm font-medium text-gray-900 mb-2">
                 Last Name
               </label>
               <input
                 type="text"
                 name="lastName"
                 required
-                className={`w-full px-4 py-2 rounded-lg border ${
-                  touched.lastName && !formData.lastName ? 'border-red-500' : 'border-gray-300'
-                } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200`}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-black transition-colors text-sm"
                 value={formData.lastName}
                 onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="Enter last name"
+                placeholder="Last name"
               />
-              {touched.lastName && !formData.lastName && (
-                <p className="text-red-500 text-sm">Last name is required</p>
-              )}
             </div>
           </div>
 
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
+          <div>
+            <label className="block text-sm font-medium text-gray-900 mb-2">
               Email
             </label>
             <input
               type="email"
               name="email"
               required
-              className={`w-full px-4 py-2 rounded-lg border ${
-                touched.email && !formData.email ? 'border-red-500' : 'border-gray-300'
-              } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200`}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-black transition-colors text-sm"
               value={formData.email}
               onChange={handleChange}
-              onBlur={handleBlur}
-              placeholder="Enter email address"
+              placeholder="Email address"
             />
-            {touched.email && !formData.email && (
-              <p className="text-red-500 text-sm">Valid email is required</p>
-            )}
           </div>
 
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
+          <div>
+            <label className="block text-sm font-medium text-gray-900 mb-2">
               Password
             </label>
             <input
               type="password"
               name="password"
               required
-              className={`w-full px-4 py-2 rounded-lg border ${
-                touched.password && !formData.password ? 'border-red-500' : 'border-gray-300'
-              } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200`}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-black transition-colors text-sm"
               value={formData.password}
               onChange={handleChange}
-              onBlur={handleBlur}
-              placeholder="Enter password"
+              placeholder="Password"
             />
-            {touched.password && !formData.password && (
-              <p className="text-red-500 text-sm">Password is required</p>
-            )}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-900 mb-2">
                 CNIC
               </label>
               <input
                 type="text"
                 name="cnic"
                 required
-                className={`w-full px-4 py-2 rounded-lg border ${
-                  touched.cnic && !formData.cnic ? 'border-red-500' : 'border-gray-300'
-                } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200`}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-black transition-colors text-sm"
                 value={formData.cnic}
                 onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="Enter CNIC"
+                placeholder="CNIC number"
               />
-              {touched.cnic && !formData.cnic && (
-                <p className="text-red-500 text-sm">CNIC is required</p>
-              )}
             </div>
-            <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">
+            <div>
+              <label className="block text-sm font-medium text-gray-900 mb-2">
                 Phone Number
               </label>
               <input
                 type="tel"
                 name="phoneNumber"
                 required
-                className={`w-full px-4 py-2 rounded-lg border ${
-                  touched.phoneNumber && !formData.phoneNumber ? 'border-red-500' : 'border-gray-300'
-                } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200`}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-black transition-colors text-sm"
                 value={formData.phoneNumber}
                 onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="Enter phone number"
+                placeholder="Phone number"
               />
-              {touched.phoneNumber && !formData.phoneNumber && (
-                <p className="text-red-500 text-sm">Phone number is required</p>
-              )}
             </div>
           </div>
 
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
+          <div>
+            <label className="block text-sm font-medium text-gray-900 mb-2">
               Date of Birth
             </label>
             <input
               type="date"
               name="dateOfBirth"
               required
-              className={`w-full px-4 py-2 rounded-lg border ${
-                touched.dateOfBirth && !formData.dateOfBirth ? 'border-red-500' : 'border-gray-300'
-              } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200`}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-black transition-colors text-sm"
               value={formData.dateOfBirth}
               onChange={handleChange}
-              onBlur={handleBlur}
             />
-            {touched.dateOfBirth && !formData.dateOfBirth && (
-              <p className="text-red-500 text-sm">Date of birth is required</p>
-            )}
           </div>
 
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
+          <div>
+            <label className="block text-sm font-medium text-gray-900 mb-2">
               Expertise
             </label>
             <div className="flex gap-2">
@@ -329,28 +270,28 @@ const AdminRegister = () => {
                 value={expertiseInput}
                 onChange={(e) => setExpertiseInput(e.target.value)}
                 onKeyPress={(e) => handleKeyPress(e, handleAddExpertise)}
-                className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
-                placeholder="Add expertise (press Enter to add)"
+                className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-black transition-colors text-sm"
+                placeholder="Add expertise"
               />
               <button
                 type="button"
                 onClick={handleAddExpertise}
-                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
+                className="px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors text-sm font-medium"
               >
                 Add
               </button>
             </div>
-            <div className="flex flex-wrap gap-2 mt-2">
+            <div className="flex flex-wrap gap-2 mt-3">
               {formData.expertise.map((exp, index) => (
                 <span
                   key={index}
-                  className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm flex items-center gap-2"
+                  className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm flex items-center gap-2"
                 >
                   {exp}
                   <button
                     type="button"
                     onClick={() => handleRemoveExpertise(index)}
-                    className="text-blue-600 hover:text-blue-800 focus:outline-none"
+                    className="text-gray-600 hover:text-black"
                   >
                     ×
                   </button>
@@ -359,8 +300,8 @@ const AdminRegister = () => {
             </div>
           </div>
 
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
+          <div>
+            <label className="block text-sm font-medium text-gray-900 mb-2">
               Profile Picture
             </label>
             <input
@@ -368,62 +309,50 @@ const AdminRegister = () => {
               name="profilePicture"
               onChange={handleFileChange}
               accept="image/*"
-              className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-black transition-colors text-sm"
             />
             {previewUrl && (
               <img
                 src={previewUrl}
                 alt="Profile preview"
-                className="mt-2 w-24 h-24 object-cover rounded-full"
+                className="mt-3 w-20 h-20 object-cover rounded-full border-2 border-gray-200"
               />
             )}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-900 mb-2">
                 Country
               </label>
               <input
                 type="text"
                 name="location.country"
                 required
-                className={`w-full px-4 py-2 rounded-lg border ${
-                  touched['location.country'] && !formData.location.country ? 'border-red-500' : 'border-gray-300'
-                } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200`}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-black transition-colors text-sm"
                 value={formData.location.country}
                 onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="Enter country"
+                placeholder="Country"
               />
-              {touched['location.country'] && !formData.location.country && (
-                <p className="text-red-500 text-sm">Country is required</p>
-              )}
             </div>
-            <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">
+            <div>
+              <label className="block text-sm font-medium text-gray-900 mb-2">
                 City
               </label>
               <input
                 type="text"
                 name="location.city"
                 required
-                className={`w-full px-4 py-2 rounded-lg border ${
-                  touched['location.city'] && !formData.location.city ? 'border-red-500' : 'border-gray-300'
-                } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200`}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-black transition-colors text-sm"
                 value={formData.location.city}
                 onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="Enter city"
+                placeholder="City"
               />
-              {touched['location.city'] && !formData.location.city && (
-                <p className="text-red-500 text-sm">City is required</p>
-              )}
             </div>
           </div>
 
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
+          <div>
+            <label className="block text-sm font-medium text-gray-900 mb-2">
               Languages
             </label>
             <div className="flex gap-2">
@@ -432,28 +361,28 @@ const AdminRegister = () => {
                 value={languageInput}
                 onChange={(e) => setLanguageInput(e.target.value)}
                 onKeyPress={(e) => handleKeyPress(e, handleAddLanguage)}
-                className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
-                placeholder="Add language (press Enter to add)"
+                className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-black transition-colors text-sm"
+                placeholder="Add language"
               />
               <button
                 type="button"
                 onClick={handleAddLanguage}
-                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
+                className="px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors text-sm font-medium"
               >
                 Add
               </button>
             </div>
-            <div className="flex flex-wrap gap-2 mt-2">
+            <div className="flex flex-wrap gap-2 mt-3">
               {formData.languages.map((lang, index) => (
                 <span
                   key={index}
-                  className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm flex items-center gap-2"
+                  className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm flex items-center gap-2"
                 >
                   {lang}
                   <button
                     type="button"
                     onClick={() => handleRemoveLanguage(index)}
-                    className="text-green-600 hover:text-green-800 focus:outline-none"
+                    className="text-gray-600 hover:text-black"
                   >
                     ×
                   </button>
@@ -462,19 +391,16 @@ const AdminRegister = () => {
             </div>
           </div>
 
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
+          <div>
+            <label className="block text-sm font-medium text-gray-900 mb-2">
               Qualification
             </label>
             <select
               name="qualification"
               required
-              className={`w-full px-4 py-2 rounded-lg border ${
-                touched.qualification && !formData.qualification ? 'border-red-500' : 'border-gray-300'
-              } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200`}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-black transition-colors text-sm"
               value={formData.qualification}
               onChange={handleChange}
-              onBlur={handleBlur}
             >
               <option value="">Select qualification</option>
               <option value="PhD">PhD</option>
@@ -482,19 +408,16 @@ const AdminRegister = () => {
               <option value="Bachelors">Bachelors</option>
               <option value="Diploma">Diploma</option>
             </select>
-            {touched.qualification && !formData.qualification && (
-              <p className="text-red-500 text-sm">Qualification is required</p>
-            )}
           </div>
 
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
+          <div>
+            <label className="block text-sm font-medium text-gray-900 mb-2">
               Role
             </label>
             <select
               name="role"
               required
-              className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-black transition-colors text-sm"
               value={formData.role}
               onChange={handleChange}
             >
@@ -503,33 +426,15 @@ const AdminRegister = () => {
             </select>
           </div>
 
-          <div>
-            <button
-              type="submit"
-              disabled={isLoading}
-              className={`w-full py-3 px-4 rounded-lg text-white font-medium ${
-                isLoading
-                  ? 'bg-blue-400 cursor-not-allowed'
-                  : 'bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
-              } transition duration-200`}
-            >
-              {isLoading ? (
-                <span className="flex items-center justify-center">
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Processing...
-                </span>
-              ) : (
-                'Register Staff'
-              )}
-            </button>
-          </div>
-        </form>
+          <button
+            onClick={handleSubmit}
+            disabled={isLoading}
+            className="w-full py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50 text-sm font-medium mt-4"
+          >
+            {isLoading ? 'Registering...' : 'Register Staff'}
+          </button>
+        </div>
       </div>
     </div>
   );
-};
-
-export default AdminRegister; 
+}

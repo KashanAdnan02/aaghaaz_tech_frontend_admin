@@ -16,7 +16,6 @@ const Home = () => {
     const fetchDashboardData = async () => {
       try {
         setLoading(true);
-        // Make parallel API calls for better performance
         const [studentsResponse, coursesResponse, enrolledResponse] = await Promise.all([
           api.get('/api/students/count'),
           api.get('/api/courses/count'),
@@ -33,7 +32,6 @@ const Home = () => {
         });
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
-        // Set fallback data if API fails
         setStats({
           totalStudents: 0,
           totalCourses: 0,
@@ -48,11 +46,7 @@ const Home = () => {
 
     fetchDashboardData();
   }, []);
-
-  // Dashboard card component
   const StatCard = ({ title, value, icon, color }) => {
-    console.log(title, value, icon, color);
-
     return (
       <div className={`bg-white rounded-lg shadow-md p-6 border-l-4 ${color}`}>
         <div className="flex items-center justify-between">
@@ -71,8 +65,6 @@ const Home = () => {
   return (
     <div>
       <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
-
-      {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-5 mb-8">
         <StatCard
           title="Total Students"
@@ -129,8 +121,6 @@ const Home = () => {
           }
         />
       </div>
-
-      {/* Quick Access Sections */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white rounded-lg shadow-md p-6">
           <h2 className="text-lg font-semibold mb-4">Quick Actions</h2>
@@ -176,7 +166,6 @@ const Home = () => {
         <div className="bg-white rounded-lg shadow-md p-6">
           <h2 className="text-lg font-semibold mb-4">Recent Activities</h2>
           <div className="space-y-4">
-            {/* This would be populated with actual data in a real implementation */}
             <div className="flex items-start">
               <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3 mt-1">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
